@@ -21,6 +21,7 @@ namespace Compilador
         private void EditorCaixaTexto_TextoMudado(object sender, TextChangedEventArgs e)
         {
             AtualizarNumeroLinha();
+            NumeroLinhaScroll.ScrollToVerticalOffset(EditorScrollViewer.VerticalOffset);
         }
 
         private void EditorCaixaTexto_TamanhoMudado(object sender, SizeChangedEventArgs e)
@@ -38,16 +39,15 @@ namespace Compilador
 
         private void AtualizarNumeroLinha()
         {
+            EditorCaixaTexto.UpdateLayout(); // Força a atualização do layout
             int linhaContador = EditorCaixaTexto.LineCount;
 
-            // Garante que não gere um erro quando o editor está vazio
             if (linhaContador < 1)
             {
-                NumerosLinha.Text = "1"; // Exibe pelo menos a linha 1
+                NumerosLinha.Text = "1";
                 return;
             }
 
-            // Atualiza apenas se o número de linhas mudou
             if (linhaContador != _ultimaContagemLinhas)
             {
                 _ultimaContagemLinhas = linhaContador;

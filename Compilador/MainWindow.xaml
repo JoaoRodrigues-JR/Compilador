@@ -24,66 +24,66 @@
                 </LinearGradientBrush>
             </Canvas.Background>
             <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Button x:Name="novoArquivo" Width="90" Height="55" Margin="7" Background="White" Cursor="Hand" AutomationProperties.Name="" ToolTip="Novo arquivo">
+                <Button x:Name="novoArquivo" Width="95" Height="55" Margin="7" Background="White" Cursor="Hand" AutomationProperties.Name="" ToolTip="Novo arquivo">
                     <StackPanel>
-                        <Image x:Name="novoDocumentoIcone" Source="/novoDocumentoIcone.png" Width="25"></Image>
-                        <TextBlock FontSize="10" FontFamily="Arial Rounded MT Bold">novo [ctrl-n]</TextBlock>
+                        <Image x:Name="novoDocumentoIcone" Source="/public/imgs/novoDocumentoIcone.png" Width="25"></Image>
+                        <TextBlock FontSize="11" FontFamily="Arial Rounded MT Bold">novo [ctrl-n]</TextBlock>
                     </StackPanel>
                 </Button>
             </Grid>
             <Grid Canvas.Left="95" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Button Width="90" Height="55" Margin="7" Background="White" Cursor="Hand" >
+                <Button Width="95" Height="55" Margin="7" Background="White" Cursor="Hand" >
                     <StackPanel>
-                        <Image x:Name="abrirIcone" Source="/novoDocumentoIcone.png" Width="25"></Image>
-                        <TextBlock FontSize="10" FontFamily="Arial Rounded MT Bold">abir [ctrl-o]</TextBlock>
+                        <Image x:Name="abrirIcone" Source="/public/imgs/abrirIcone.png" Width="25"></Image>
+                        <TextBlock FontSize="11" FontFamily="Arial Rounded MT Bold">abrir [ctrl-o]</TextBlock>
                     </StackPanel>
                 </Button>
             </Grid>
             <Grid Canvas.Left="190" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Button Width="90" Height="55" Margin="7" Background="White" Cursor="Hand" >
+                <Button Width="95" Height="55" Margin="7" Background="White" Cursor="Hand" >
                     <StackPanel>
-                        <Image x:Name="salvarIcone" Source="/novoDocumentoIcone.png" Width="25"></Image>
-                        <TextBlock FontSize="10" FontFamily="Arial Rounded MT Bold">salvar [ctrl-s]</TextBlock>
+                        <Image x:Name="salvarIcone" Source="/public/imgs/salvaricone.png" Width="25"></Image>
+                        <TextBlock FontSize="11" FontFamily="Arial Rounded MT Bold">salvar [ctrl-s]</TextBlock>
                     </StackPanel>
                 </Button>
             </Grid>
             <Grid Canvas.Left="285" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Button Width="90" Height="55" Margin="7" Background="White" Cursor="Hand" >
+                <Button Width="95" Height="55" Margin="7" Background="White" Cursor="Hand" >
                     <StackPanel>
-                        <Image x:Name="copiarIcone" Source="/novoDocumentoIcone.png" Width="25"></Image>
-                        <TextBlock FontSize="10" FontFamily="Arial Rounded MT Bold">copiar [ctrl-c]</TextBlock>
+                        <Image x:Name="copiarIcone" Source="/public/imgs/copiarIcone.png" Width="25"></Image>
+                        <TextBlock FontSize="11" FontFamily="Arial Rounded MT Bold">copiar [ctrl-c]</TextBlock>
                     </StackPanel>
                 </Button>
             </Grid>
             <Grid Canvas.Left="380" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Button Width="90" Height="55" Margin="7" Background="White" Cursor="Hand" >
+                <Button Width="95" Height="55" Margin="7" Background="White" Cursor="Hand" >
                     <StackPanel>
-                        <Image x:Name="colarIcone" Source="/novoDocumentoIcone.png" Width="25"></Image>
-                        <TextBlock FontSize="10" FontFamily="Arial Rounded MT Bold">colar [ctrl-v]</TextBlock>
+                        <Image x:Name="colarIcone" Source="/public/imgs/colarIcone.png" Width="25"></Image>
+                        <TextBlock FontSize="11" FontFamily="Arial Rounded MT Bold">colar [ctrl-v]</TextBlock>
                     </StackPanel>
                 </Button>
             </Grid>
             <Grid Canvas.Left="475" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Button Width="90" Height="55" Margin="7" Background="White" Cursor="Hand" >
+                <Button Width="95" Height="55" Margin="7" Background="White" Cursor="Hand" >
                     <StackPanel>
-                        <Image x:Name="recortarIcone" Source="/novoDocumentoIcone.png" Width="25"></Image>
-                        <TextBlock FontSize="10" FontFamily="Arial Rounded MT Bold">recortar [ctrl-x]</TextBlock>
+                        <Image x:Name="recortarIcone" Source="/public/imgs/cortarIcone.png" Width="25"></Image>
+                        <TextBlock FontSize="11" FontFamily="Arial Rounded MT Bold">recortar [ctrl-x]</TextBlock>
                     </StackPanel>
                 </Button>
             </Grid>
             <Grid Canvas.Left="570" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Button Width="90" Height="55" Margin="7" Background="White" Cursor="Hand" >
+                <Button Width="95" Height="55" Margin="7" Background="White" Cursor="Hand" >
                     <StackPanel>
-                        <Image x:Name="compilarIcone" Source="/novoDocumentoIcone.png" Width="25"></Image>
-                        <TextBlock FontSize="10" FontFamily="Arial Rounded MT Bold">compilar [F7]</TextBlock>
+                        <Image x:Name="compilarIcone" Source="/public/imgs/iniciarIcone.png" Width="25"></Image>
+                        <TextBlock FontSize="11" FontFamily="Arial Rounded MT Bold">compilar [F7]</TextBlock>
                     </StackPanel>
                 </Button>
             </Grid>
             <Grid Canvas.Left="665" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Button Width="90" Height="55" Margin="7" Background="White" Cursor="Hand" >
+                <Button Width="95" Height="55" Margin="7" Background="White" Cursor="Hand" >
                     <StackPanel>
-                        <Image x:Name="equipeIcone" Source="/novoDocumentoIcone.png" Width="25"></Image>
-                        <TextBlock FontSize="10" FontFamily="Arial Rounded MT Bold">equipe [F1]</TextBlock>
+                        <Image x:Name="equipeIcone" Source="/public/imgs/timeIcone.png" Width="25"></Image>
+                        <TextBlock FontSize="11" FontFamily="Arial Rounded MT Bold">equipe [F1]</TextBlock>
                     </StackPanel>
                 </Button>
             </Grid>
@@ -103,7 +103,7 @@
                 </Grid.ColumnDefinitions>
 
                 <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled" x:Name="NumeroLinhaScroll" IsHitTestVisible="False">
-                    <TextBlock x:Name="NumerosLinha" FontFamily="Courier New" FontSize="14" Padding="7,0,7,0 " Margin="0,0,0,17" Background="LightGray"/>
+                    <TextBlock x:Name="NumerosLinha" FontFamily="Courier New" FontSize="14" Padding="7,0,7,0 " Margin="0,0,0,17" Background="LightGray" LineStackingStrategy="BlockLineHeight"/>
                 </ScrollViewer>
 
                 <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" x:Name="EditorScrollViewer">

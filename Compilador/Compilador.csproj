@@ -9,16 +9,41 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="novoDocumentoIcone.png" />
+    <None Remove="public\imgs\abrirIcone.png" />
+    <None Remove="public\imgs\colarIcone.png" />
+    <None Remove="public\imgs\copiarIcone.png" />
+    <None Remove="public\imgs\cortarIcone.png" />
+    <None Remove="public\imgs\iniciarIcone.png" />
     <None Remove="public\imgs\novoDocumentoIcone.png" />
+    <None Remove="public\imgs\salvaricone.png" />
+    <None Remove="public\imgs\timeIcone.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="public\imgs\novoDocumentoIcone.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="novoDocumentoIcone.png" />
+    <Content Include="public\imgs\abrirIcone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="public\imgs\colarIcone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="public\imgs\copiarIcone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="public\imgs\cortarIcone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="public\imgs\iniciarIcone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="public\imgs\novoDocumentoIcone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="public\imgs\salvaricone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="public\imgs\timeIcone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
