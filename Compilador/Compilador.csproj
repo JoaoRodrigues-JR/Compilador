@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="novoDocumentoIcone.png" />
+    <None Remove="public\imgs\novoDocumentoIcone.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="public\imgs\novoDocumentoIcone.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="novoDocumentoIcone.png" />
+  </ItemGroup>
+
+</Project>
