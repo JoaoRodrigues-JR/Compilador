@@ -10,8 +10,8 @@ public class CompiladorUI extends JFrame {
     private JTextArea areaMensagens;
     private JLabel barraStatus;
     private JTextArea linhasNumeradas;
-    private File arquivoAtual; // Variável de instância para armazenar o arquivo atual
-    private boolean textoAlterado = false; // Variável para rastrear se houve alterações no texto
+    private File arquivoAtual;
+    private boolean textoAlterado = false;
 
     @SuppressWarnings("unused")
     public CompiladorUI() {
@@ -46,9 +46,11 @@ public class CompiladorUI extends JFrame {
         adicionarBotao(toolBar, "Equipe", "icons/team.png", "F1", (e) -> exibirEquipe());
 
         linhasNumeradas = new JTextArea("1\n");
+        linhasNumeradas.setBackground(Color.LIGHT_GRAY);
+        linhasNumeradas.setOpaque(true);
         linhasNumeradas.setEditable(false);
         linhasNumeradas.setEnabled(false);
-        linhasNumeradas.setBackground(Color.LIGHT_GRAY);
+        linhasNumeradas.setDisabledTextColor(Color.BLACK);
         linhasNumeradas.setPreferredSize(new Dimension(40, Integer.MAX_VALUE));
 
         editorTexto = new JTextArea();
@@ -66,6 +68,7 @@ public class CompiladorUI extends JFrame {
         editorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         areaMensagens = new JTextArea();
+        areaMensagens.setDisabledTextColor(Color.BLACK);
         areaMensagens.setEditable(false);
         areaMensagens.setEnabled(false);
         areaMensagens.setLineWrap(false);
@@ -109,23 +112,21 @@ public class CompiladorUI extends JFrame {
     }
 
     private void novoArquivo() {
-        // Verifica se há alterações não salvas
         if (textoAlterado) {
             int resposta = JOptionPane.showConfirmDialog(this, "Deseja salvar as alterações no arquivo atual?", "Salvar Arquivo", JOptionPane.YES_NO_CANCEL_OPTION);
             if (resposta == JOptionPane.YES_OPTION) {
                 salvarArquivo();
             } else if (resposta == JOptionPane.CANCEL_OPTION) {
-                return; // Cancela a operação de novo arquivo
+                return;
             }
         }
     
-        // Limpa o editor, a área de mensagens e a barra de status
         editorTexto.setText("");
         areaMensagens.setText("");
         atualizarNumeracaoLinhas();
         barraStatus.setText("");
-        arquivoAtual = null; // Reseta o arquivo atual
-        textoAlterado = false; // Reseta o estado de alteração do texto
+        arquivoAtual = null;
+        textoAlterado = false;
     }
 
     private void abrirArquivo() {
@@ -134,7 +135,6 @@ public class CompiladorUI extends JFrame {
         
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File arquivo = fileChooser.getSelectedFile();
-            // Verifica se o arquivo tem a extensão .txt
             if (!arquivo.getName().toLowerCase().endsWith(".txt")) {
                 JOptionPane.showMessageDialog(this, "Por favor, selecione um arquivo de texto (*.txt).", "Arquivo Inválido", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -147,8 +147,8 @@ public class CompiladorUI extends JFrame {
                 }
                 editorTexto.setText(conteudo.toString());
                 barraStatus.setText(arquivo.getAbsolutePath());
-                arquivoAtual = arquivo; // Atualiza o arquivo atual
-                textoAlterado = false; // Reseta o estado de alteração do texto
+                arquivoAtual = arquivo;
+                textoAlterado = false;
             } catch (IOException e) {
                 barraStatus.setText(" Erro ao abrir o arquivo.");
             }
@@ -157,30 +157,27 @@ public class CompiladorUI extends JFrame {
 
     private void salvarArquivo() {
         if (arquivoAtual != null) {
-            // Salva no arquivo atual
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivoAtual))) {
                 writer.write(editorTexto.getText());
                 areaMensagens.setText(" Arquivo salvo: " + arquivoAtual.getName());
-                textoAlterado = false; // Reseta o estado de alteração do texto
+                textoAlterado = false;
             } catch (IOException e) {
                 areaMensagens.setText(" Erro ao salvar o arquivo.");
             }
         } else {
-            // Abre o JFileChooser para salvar como um novo arquivo
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Arquivos de Texto (*.txt)", "txt"));
             
             if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
                 File arquivo = fileChooser.getSelectedFile();
-                // Adiciona a extensão .txt se não estiver presente
                 if (!arquivo.getName().toLowerCase().endsWith(".txt")) {
                     arquivo = new File(arquivo.getAbsolutePath() + ".txt");
                 }
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivo))) {
                     writer.write(editorTexto.getText());
                     areaMensagens.setText(" Arquivo salvo: " + arquivo.getName());
-                    arquivoAtual = arquivo; // Atualiza o arquivo atual
-                    textoAlterado = false; // Reseta o estado de alteração do texto
+                    arquivoAtual = arquivo;
+                    textoAlterado = false; 
                 } catch (IOException e) {
                     areaMensagens.setText(" Erro ao salvar o arquivo.");
                 }
@@ -199,7 +196,6 @@ public class CompiladorUI extends JFrame {
         if (codigo.trim().isEmpty()) {
             areaMensagens.setText("Erro: Nenhum código inserido!");
         } else {
-            // Simulação de compilação
             areaMensagens.setText("Compilando código...\nCompilação bem-sucedida!");
         }
     }
@@ -227,7 +223,7 @@ public class CompiladorUI extends JFrame {
             } else if (resposta == JOptionPane.NO_OPTION) {
                 return true;
             } else {
-                return false; // Cancela a operação de saída
+                return false;
             }
         }
         return true;
