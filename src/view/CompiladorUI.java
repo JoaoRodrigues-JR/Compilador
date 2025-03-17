@@ -1,6 +1,4 @@
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -11,56 +9,34 @@ public class CompiladorUI extends JFrame {
     private JLabel barraStatus;
     private JTextArea linhasNumeradas;
     private File arquivoAtual;
-    private boolean textoAlterado = false;
 
     @SuppressWarnings("unused")
     public CompiladorUI() {
         setTitle("Compilador");
         setSize(1500, 800);
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
-
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                if (confirmarSaida()) {
-                    dispose();
-                }
-            }
-        });
 
         JToolBar toolBar = new JToolBar();
         toolBar.setPreferredSize(new Dimension(1500, 70));
 
-        adicionarBotao(toolBar, "Novo", "icons/new.png", "ctrl N", (e) -> novoArquivo());
-        adicionarBotao(toolBar, "Abrir", "icons/open.png", "ctrl O", (e) -> abrirArquivo());
-        adicionarBotao(toolBar, "Salvar", "icons/save.png", "ctrl S", (e) -> salvarArquivo());
+        adicionarBotao(toolBar, "Novo", "public/icones/novo.png", "ctrl N", (e) -> novoArquivo());
+        adicionarBotao(toolBar, "Abrir", "public/icones/abrir.png", "ctrl O", (e) -> abrirArquivo());
+        adicionarBotao(toolBar, "Salvar", "public/icones/salvar.png", "ctrl S", (e) -> salvarArquivo());
         toolBar.addSeparator();
-        adicionarBotao(toolBar, "Copiar", "icons/copy.png", "ctrl C", (e) -> copiarTexto());
-        adicionarBotao(toolBar, "Colar", "icons/paste.png", "ctrl V", (e) -> colarTexto());
-        adicionarBotao(toolBar, "Recortar", "icons/cut.png", "ctrl X", (e) -> recortarTexto());
+        adicionarBotao(toolBar, "Copiar", "public/icones/copiar.png", "ctrl C", (e) -> copiarTexto());
+        adicionarBotao(toolBar, "Colar", "public/icones/colar.png", "ctrl V", (e) -> colarTexto());
+        adicionarBotao(toolBar, "Recortar", "public/icones/recortar.png", "ctrl X", (e) -> recortarTexto());
         toolBar.addSeparator();
-        adicionarBotao(toolBar, "Compilar", "icons/compile.png", "F7", (e) -> compilarCodigo());
+        adicionarBotao(toolBar, "Compilar", "public/icones/compliar.png", "F7", (e) -> compilarCodigo());
         toolBar.addSeparator();
-        adicionarBotao(toolBar, "Equipe", "icons/team.png", "F1", (e) -> exibirEquipe());
-
-        linhasNumeradas = new JTextArea("1\n");
-        linhasNumeradas.setBackground(Color.LIGHT_GRAY);
-        linhasNumeradas.setOpaque(true);
-        linhasNumeradas.setEditable(false);
-        linhasNumeradas.setEnabled(false);
-        linhasNumeradas.setDisabledTextColor(Color.BLACK);
-        linhasNumeradas.setPreferredSize(new Dimension(40, Integer.MAX_VALUE));
+        adicionarBotao(toolBar, "Equipe", "public/icones/time.png", "F1", (e) -> exibirEquipe());
 
         editorTexto = new JTextArea();
+        editorTexto.setBorder(new NumberedBorder());
         editorTexto.setLineWrap(false);
         editorTexto.setWrapStyleWord(false); 
-        editorTexto.getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e) { atualizarNumeracaoLinhas(); textoAlterado = true; }
-            public void removeUpdate(DocumentEvent e) { atualizarNumeracaoLinhas(); textoAlterado = true; }
-            public void changedUpdate(DocumentEvent e) { atualizarNumeracaoLinhas(); textoAlterado = true; }
-        });
 
         JScrollPane editorScrollPane = new JScrollPane(editorTexto);
         editorScrollPane.setRowHeaderView(linhasNumeradas);
@@ -112,21 +88,10 @@ public class CompiladorUI extends JFrame {
     }
 
     private void novoArquivo() {
-        if (textoAlterado) {
-            int resposta = JOptionPane.showConfirmDialog(this, "Deseja salvar as alterações no arquivo atual?", "Salvar Arquivo", JOptionPane.YES_NO_CANCEL_OPTION);
-            if (resposta == JOptionPane.YES_OPTION) {
-                salvarArquivo();
-            } else if (resposta == JOptionPane.CANCEL_OPTION) {
-                return;
-            }
-        }
-    
         editorTexto.setText("");
         areaMensagens.setText("");
-        atualizarNumeracaoLinhas();
         barraStatus.setText("");
         arquivoAtual = null;
-        textoAlterado = false;
     }
 
     private void abrirArquivo() {
@@ -148,7 +113,6 @@ public class CompiladorUI extends JFrame {
                 editorTexto.setText(conteudo.toString());
                 barraStatus.setText(arquivo.getAbsolutePath());
                 arquivoAtual = arquivo;
-                textoAlterado = false;
             } catch (IOException e) {
                 barraStatus.setText(" Erro ao abrir o arquivo.");
             }
@@ -160,7 +124,6 @@ public class CompiladorUI extends JFrame {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivoAtual))) {
                 writer.write(editorTexto.getText());
                 areaMensagens.setText(" Arquivo salvo: " + arquivoAtual.getName());
-                textoAlterado = false;
             } catch (IOException e) {
                 areaMensagens.setText(" Erro ao salvar o arquivo.");
             }
@@ -177,7 +140,6 @@ public class CompiladorUI extends JFrame {
                     writer.write(editorTexto.getText());
                     areaMensagens.setText(" Arquivo salvo: " + arquivo.getName());
                     arquivoAtual = arquivo;
-                    textoAlterado = false; 
                 } catch (IOException e) {
                     areaMensagens.setText(" Erro ao salvar o arquivo.");
                 }
@@ -202,31 +164,6 @@ public class CompiladorUI extends JFrame {
 
     private void exibirEquipe() {
         areaMensagens.setText("Equipe: João Victor Rodrigues e Lucas Samuel Gustzaki");
-    }
-
-    private void atualizarNumeracaoLinhas() {
-        String texto = editorTexto.getText();
-        int totalLinhas = texto.split("\n", -1).length; 
-        StringBuilder sb = new StringBuilder();
-        for (int i = 1; i <= totalLinhas; i++) {
-            sb.append(i).append("\n");
-        }
-        linhasNumeradas.setText(sb.toString());
-    }
-
-    private boolean confirmarSaida() {
-        if (textoAlterado) {
-            int resposta = JOptionPane.showConfirmDialog(this, "Deseja salvar as alterações no arquivo atual?", "Salvar Arquivo", JOptionPane.YES_NO_CANCEL_OPTION);
-            if (resposta == JOptionPane.YES_OPTION) {
-                salvarArquivo();
-                return true;
-            } else if (resposta == JOptionPane.NO_OPTION) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return true;
     }
 
     public static void main(String[] args) {
