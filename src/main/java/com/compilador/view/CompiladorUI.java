@@ -170,6 +170,7 @@ public class CompiladorUI extends JFrame {
 
 
         try {
+            semantico.setArquivoAtual(arquivoAtual);
             sintatico.parse(lexico, semantico);
             JLabel lblEquipe = new JLabel("Programa compilado com sucesso!");
             areaMensagens.add(lblEquipe, BorderLayout.NORTH);
@@ -180,7 +181,7 @@ public class CompiladorUI extends JFrame {
         } catch (SyntaticError e) {
             tratarErroSintatico(e, codigo);
         } catch (SemanticError e) {
-            // TODO
+            tratarErroSemantico(e, codigo);
         }
     }
 
@@ -303,6 +304,47 @@ private void tratarErroSintatico(SyntaticError e, String codigo) {
     areaMensagens.add(lblErro);
     
     barraStatus.setText(" Erro durante a compilação");
+    
+    areaMensagens.revalidate();
+    areaMensagens.repaint();
+    
+    SwingUtilities.invokeLater(() -> {
+        mensagemScrollPane.getVerticalScrollBar().setValue(0);
+        mensagemScrollPane.getHorizontalScrollBar().setValue(0);
+    });
+}
+
+private void tratarErroSemantico(SemanticError e, String codigo) {
+    areaMensagens.removeAll();
+    
+    int errorPos = e.getPosition();
+    
+    // Encontrar a linha do erro
+    String[] linhas = codigo.split("\n");
+    int linhaErro = 1;
+    int posAcumulada = 0;
+    
+    for (String l : linhas) {
+        posAcumulada += l.length() + 1;
+        if (errorPos < posAcumulada)
+            break;
+        linhaErro++;
+    }
+    
+    // Formatar a mensagem de erro
+    String mensagemErro;
+    if (errorPos >= 0) {
+        mensagemErro = String.format("ERRO na linha %d: %s", linhaErro, e.getMessage());
+    } else {
+        // Para erros sem posição específica (como -1)
+        mensagemErro = String.format("ERRO: %s", e.getMessage());
+    }
+    
+    JTextArea lblErro = new JTextArea(mensagemErro);
+    lblErro.setEditable(false);
+    areaMensagens.add(lblErro);
+    
+    barraStatus.setText(" Erro semântico durante a compilação");
     
     areaMensagens.revalidate();
     areaMensagens.repaint();

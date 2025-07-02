@@ -19,18 +19,19 @@ public class Semantico implements Constants {
     private boolean erroSemantico = false;
 
     public void executeAction(int action, Token token) throws SemanticError {
-        if (erroSemantico) return;
+        if (erroSemantico)
+            return;
 
         try {
             switch (action) {
                 // Ação 101 - Início do programa
                 case 101:
                     codigoObjeto = ".assembly extern mscorlib {}\n" +
-                                   ".assembly _programa()\n" +
-                                   ".module _programa.exe\n\n" +
-                                   ".class public _programa {\n" +
-                                   "    .method static public void _principal() {\n" +
-                                   "        .entrypoint\n";
+                            ".assembly _programa{}\n" +
+                            ".module _programa.exe\n" +
+                            ".class public _programa{\n" +
+                            " .method static public void _principal(){\n" +
+                            " .entrypoint\n";
                     break;
 
                 // Ação 102 - Fim do programa
@@ -43,9 +44,12 @@ public class Semantico implements Constants {
                 case 103:
                     tipo = token.getLexeme();
                     // Converter tipos para IL
-                    if (tipo.equals("int")) tipo = "int64";
-                    else if (tipo.equals("float")) tipo = "float64";
-                    else if (tipo.equals("char")) tipo = "string";
+                    if (tipo.equals("int"))
+                        tipo = "int64";
+                    else if (tipo.equals("float"))
+                        tipo = "float64";
+                    else if (tipo.equals("char"))
+                        tipo = "string";
                     break;
 
                 // Ação 104 - Processar lista de identificadores
@@ -70,20 +74,20 @@ public class Semantico implements Constants {
                 case 106:
                     String tipoExpr = pilhaTipos.pop();
                     String id = listaIdentificadores.get(0);
-                    
+
                     if (!tabelaSimbolos.containsKey(id)) {
                         throw new SemanticError(id + " não declarado", token.getPosition());
                     }
-                    
+
                     String tipoVar = tabelaSimbolos.get(id);
-                    
+
                     // Conversão de tipos se necessário
                     if (tipoExpr.equals("int64") && tipoVar.equals("float64")) {
                         codigoObjeto += "        conv.r8\n";
                     } else if (tipoExpr.equals("float64") && tipoVar.equals("int64")) {
                         codigoObjeto += "        conv.i8\n";
                     }
-                    
+
                     codigoObjeto += "        stloc " + id + "\n";
                     listaIdentificadores.clear();
                     break;
@@ -94,20 +98,20 @@ public class Semantico implements Constants {
                         if (!tabelaSimbolos.containsKey(idReq)) {
                             throw new SemanticError(idReq + " não declarado", token.getPosition());
                         }
-                        
+
                         String tipoReq = tabelaSimbolos.get(idReq);
                         if (tipoReq.equals("string") || tipoReq.equals("bool")) {
                             throw new SemanticError(idReq + " inválido para comando de entrada", token.getPosition());
                         }
-                        
+
                         codigoObjeto += "        call string [mscorlib]System.Console::ReadLine()\n";
-                        
+
                         if (tipoReq.equals("int64")) {
                             codigoObjeto += "        call int64 [mscorlib]System.Int64::Parse(string)\n";
                         } else if (tipoReq.equals("float64")) {
                             codigoObjeto += "        call float64 [mscorlib]System.Double::Parse(string)\n";
                         }
-                        
+
                         codigoObjeto += "        stloc " + idReq + "\n";
                     }
                     listaIdentificadores.clear();
@@ -116,7 +120,7 @@ public class Semantico implements Constants {
                 // Ação 108 - Saída (echo)
                 case 108:
                     String tipoSaida = pilhaTipos.pop();
-                    
+
                     if (tipoSaida.equals("int64")) {
                         codigoObjeto += "        conv.r8\n";
                         codigoObjeto += "        conv.i8\n";
@@ -229,7 +233,7 @@ public class Semantico implements Constants {
                 case 123:
                     String tipo2 = pilhaTipos.pop();
                     String tipo1 = pilhaTipos.pop();
-                    
+
                     if (operadorRelacional.equals("==")) {
                         codigoObjeto += "        ceq\n";
                     } else if (operadorRelacional.equals("!=")) {
@@ -241,7 +245,7 @@ public class Semantico implements Constants {
                     } else if (operadorRelacional.equals(">")) {
                         codigoObjeto += "        cgt\n";
                     }
-                    
+
                     pilhaTipos.push("bool");
                     operadorRelacional = "";
                     break;
@@ -278,14 +282,14 @@ public class Semantico implements Constants {
                     if (!tabelaSimbolos.containsKey(idExpr)) {
                         throw new SemanticError(idExpr + " não declarado", token.getPosition());
                     }
-                    
+
                     String tipoId = tabelaSimbolos.get(idExpr);
                     codigoObjeto += "        ldloc " + idExpr + "\n";
-                    
+
                     if (tipoId.equals("int64")) {
                         codigoObjeto += "        conv.r8\n";
                     }
-                    
+
                     pilhaTipos.push(tipoId);
                     break;
 
@@ -306,11 +310,15 @@ public class Semantico implements Constants {
                 case 131:
                     String charValue = token.getLexeme();
                     // Tratar caracteres especiais
-                    if (charValue.equals("\\n")) charValue = "\"\\n\"";
-                    else if (charValue.equals("\\t")) charValue = "\"\\t\"";
-                    else if (charValue.equals("\\s")) charValue = "\" \"";
-                    else charValue = "\"" + charValue + "\"";
-                    
+                    if (charValue.equals("\\n"))
+                        charValue = "\"\\n\"";
+                    else if (charValue.equals("\\t"))
+                        charValue = "\"\\t\"";
+                    else if (charValue.equals("\\s"))
+                        charValue = "\" \"";
+                    else
+                        charValue = "\"" + charValue + "\"";
+
                     codigoObjeto += "        ldstr " + charValue + "\n";
                     pilhaTipos.push("string");
                     break;
@@ -335,7 +343,7 @@ public class Semantico implements Constants {
     private void resolverTipoOperacaoAritmetica() {
         String tipo2 = pilhaTipos.pop();
         String tipo1 = pilhaTipos.pop();
-        
+
         if (tipo1.equals("float64") || tipo2.equals("float64")) {
             pilhaTipos.push("float64");
         } else {
@@ -347,14 +355,14 @@ public class Semantico implements Constants {
         if (arquivoAtual == null) {
             throw new SemanticError("Nenhum arquivo aberto para salvar o código objeto", -1);
         }
-        
+
         String nomeArquivo = arquivoAtual.getAbsolutePath();
         if (nomeArquivo.endsWith(".txt")) {
             nomeArquivo = nomeArquivo.substring(0, nomeArquivo.length() - 4) + ".il";
         } else {
             nomeArquivo += ".il";
         }
-        
+
         try (FileWriter writer = new FileWriter(nomeArquivo)) {
             writer.write(codigoObjeto);
         } catch (IOException e) {
@@ -364,6 +372,7 @@ public class Semantico implements Constants {
 
     // Método auxiliar para acessar o arquivo atual da UI
     private File arquivoAtual;
+
     public void setArquivoAtual(File arquivo) {
         this.arquivoAtual = arquivo;
     }
