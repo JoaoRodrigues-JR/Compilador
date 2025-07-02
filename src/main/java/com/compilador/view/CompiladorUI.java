@@ -103,6 +103,9 @@ public class CompiladorUI extends JFrame {
                 editorTexto.setText(conteudo.toString());
                 barraStatus.setText(arquivo.getAbsolutePath());
                 arquivoAtual = arquivo;
+                areaMensagens.removeAll();
+                areaMensagens.revalidate();
+                areaMensagens.repaint();
             } catch (IOException e) {
                 barraStatus.setText(" Erro ao abrir o arquivo.");
             }
@@ -242,31 +245,57 @@ private void tratarErroSintatico(SyntaticError e, String codigo) {
         linhaErro++;
     }
     
-    // Extrair a palavra/token inteiro onde ocorreu o erro
-    String linhaAtual = linhas[linhaErro - 1];
-    int colunaErro = errorPos - inicioLinha;
-    
-    // Encontrar o início e o fim do token atual
-    int inicioToken = colunaErro;
-    while (inicioToken > 0 && !Character.isWhitespace(linhaAtual.charAt(inicioToken - 1))) {
-        inicioToken--;
-    }
-    
-    int fimToken = colunaErro;
-    while (fimToken < linhaAtual.length() && !Character.isWhitespace(linhaAtual.charAt(fimToken))) {
-        fimToken++;
-    }
-    
-    String tokenEncontrado = linhaAtual.substring(inicioToken, fimToken).trim();
-    
-    // Montar a mensagem de erro
-    String mensagemErro;
-    if (!tokenEncontrado.isEmpty()) {
-        mensagemErro = String.format("ERRO na linha %d - encontrado %s %s",
-                linhaErro, tokenEncontrado, e.getMessage());
+    // Extrair o token encontrado
+    String tokenEncontrado = "";
+    if (errorPos < codigo.length()) {
+        // Encontrar o token atual na linha
+        String linhaAtual = linhas.length > linhaErro - 1 ? linhas[linhaErro - 1] : "";
+        int colunaErro = errorPos - inicioLinha;
+        
+        // Encontrar o início e fim do token
+        int inicioToken = colunaErro;
+        while (inicioToken > 0 && !Character.isWhitespace(linhaAtual.charAt(inicioToken - 1))) {
+            inicioToken--;
+        }
+        
+        int fimToken = colunaErro;
+        while (fimToken < linhaAtual.length() && !Character.isWhitespace(linhaAtual.charAt(fimToken))) {
+            fimToken++;
+        }
+        
+        tokenEncontrado = linhaAtual.substring(
+            Math.min(inicioToken, linhaAtual.length()),
+            Math.min(fimToken, linhaAtual.length())
+        ).trim();
     } else {
-        mensagemErro = String.format("ERRO na linha %d - %s",
-                linhaErro, e.getMessage());
+        tokenEncontrado = "$";
+    }
+    
+    // Obter a mensagem de erro original
+    String mensagemOriginal = e.getMessage();
+    
+    // Formatar a mensagem de acordo com as especificações
+    String mensagemErro;
+    
+    // Caso 1: Quando for encontrado $
+    if (tokenEncontrado.equals("$")) {
+        mensagemErro = String.format("ERRO na linha %d - encontrado EOF esperado %s",
+            linhaErro, mensagemOriginal.replace("esperado ", ""));
+    }
+    // Caso 2: Quando for esperado "fim de programa"
+    else if (mensagemOriginal.contains("EOF")) {
+        mensagemErro = String.format("ERRO na linha %d - encontrado %s esperado EOF",
+            linhaErro, tokenEncontrado.isEmpty() ? "EOF" : tokenEncontrado);
+    }
+    // Caso 3: Para strings constantes encontradas
+    else if (tokenEncontrado.startsWith("\"") && tokenEncontrado.endsWith("\"")) {
+        mensagemErro = String.format("ERRO na linha %d - encontrado constante_string esperado %s",
+            linhaErro, mensagemOriginal.replace("esperado ", ""));
+    }
+    // Caso padrão
+    else {
+        mensagemErro = String.format("ERRO na linha %d - encontrado %s %s",
+            linhaErro, tokenEncontrado, mensagemOriginal);
     }
     
     JTextArea lblErro = new JTextArea(mensagemErro);

@@ -1,5 +1,4 @@
 package com.compilador.model;
-
 public interface Constants extends ScannerConstants, ParserConstants
 {
     int EPSILON  = 0;
