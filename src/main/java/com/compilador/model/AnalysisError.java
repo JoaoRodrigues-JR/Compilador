@@ -26,3 +26,4 @@ public class AnalysisError extends Exception
         return super.toString() + ", @ "+position;
     }
 }
+

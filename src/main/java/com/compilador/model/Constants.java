@@ -44,3 +44,4 @@ public interface Constants extends ScannerConstants, ParserConstants
     int t_pr_while = 39;
 
 }
+

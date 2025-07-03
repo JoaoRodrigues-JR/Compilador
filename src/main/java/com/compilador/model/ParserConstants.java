@@ -2,7 +2,7 @@ package com.compilador.model;
 
 public interface ParserConstants
 {
-    int START_SYMBOL = 40;
+     int START_SYMBOL = 40;
 
     int FIRST_NON_TERMINAL    = 40;
     int FIRST_SEMANTIC_ACTION = 72;
@@ -71,7 +71,7 @@ public interface ParserConstants
         {   2, 177,  20,  61, 178 },
         {  34,  21,  46, 179,  22 },
         {  26,  21,  54,  22 },
-        {  61,  55, 180 },
+        {  61, 180,  55 },
         {  18,  54 },
         {   0 },
         { 181,  36,  61,  57,  28, 182 },
@@ -113,7 +113,7 @@ public interface ParserConstants
         {  14,  71 },
         {  15,  71, 205 }
     };
-
+    
     String[] PARSER_ERROR =
     {
         "",
