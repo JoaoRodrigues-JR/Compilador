@@ -203,7 +203,10 @@ public class CompiladorUI extends JFrame {
         }
 
         String mensagemErro;
-        if (errorChar != '\0') {
+        if (errorChar != '\0' && e.getMessage().equals("comentário de bloco inválido ou não finalizado")) {
+             mensagemErro = String.format("ERRO na linha %d: %s",
+                    linhaErro, e.getMessage());
+        } else if (errorChar != '\0') {
             mensagemErro = String.format("ERRO na linha %d: %c - %s",
                     linhaErro, errorChar, e.getMessage());
         } else {

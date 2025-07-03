@@ -100,7 +100,7 @@ public class Semantico implements Constants {
                         }
 
                         String tipoReq = tabelaSimbolos.get(idReq);
-                        if (tipoReq.equals("string") || tipoReq.equals("bool")) {
+                        if (tipoReq.equals("char") || tipoReq.equals("bool")) {
                             throw new SemanticError(idReq + " inválido para comando de entrada", token.getPosition());
                         }
 
@@ -231,8 +231,6 @@ public class Semantico implements Constants {
 
                 // Ação 123 - Comparação relacional
                 case 123:
-                    String tipo2 = pilhaTipos.pop();
-                    String tipo1 = pilhaTipos.pop();
 
                     if (operadorRelacional.equals("==")) {
                         codigoObjeto += "        ceq\n";
@@ -329,7 +327,7 @@ public class Semantico implements Constants {
                     pilhaTipos.push("string");
                     break;
 
-                // Ação 133 - Operador unário -
+                // Ação 133 - Operador unário 
                 case 133:
                     codigoObjeto += "        neg\n";
                     break;
