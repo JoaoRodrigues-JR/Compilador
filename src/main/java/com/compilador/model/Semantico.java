@@ -232,6 +232,9 @@ public class Semantico implements Constants {
                 // Ação 123 - Comparação relacional
                 case 123:
 
+                    pilhaTipos.pop();
+                    pilhaTipos.pop();
+
                     if (operadorRelacional.equals("==")) {
                         codigoObjeto += "        ceq\n";
                     } else if (operadorRelacional.equals("!=")) {
@@ -368,7 +371,6 @@ public class Semantico implements Constants {
         }
     }
 
-    // Método auxiliar para acessar o arquivo atual da UI
     private File arquivoAtual;
 
     public void setArquivoAtual(File arquivo) {
