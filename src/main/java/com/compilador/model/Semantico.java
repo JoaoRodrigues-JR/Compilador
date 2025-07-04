@@ -230,21 +230,57 @@ public class Semantico implements Constants {
                     break;
 
                 // Ação 123 - Comparação relacional
-                case 123:
+                case 123: // Comparação relacional
+                    String tipoDir = pilhaTipos.pop();
+                    String tipoEsq = pilhaTipos.pop();
 
-                    pilhaTipos.pop();
-                    pilhaTipos.pop();
+                    // Verificação de compatibilidade de tipos
+                    if (!tipoEsq.equals(tipoDir) &&
+                            !(tipoEsq.equals("int64") && tipoDir.equals("float64")) &&
+                            !(tipoEsq.equals("float64") && tipoDir.equals("int64"))) {
+                        throw new SemanticError("Tipos incompatíveis para comparação: " + tipoEsq + " e " + tipoDir,
+                                token.getPosition());
+                    }
 
-                    if (operadorRelacional.equals("==")) {
-                        codigoObjeto += "        ceq\n";
-                    } else if (operadorRelacional.equals("!=")) {
-                        codigoObjeto += "        ceq\n";
-                        codigoObjeto += "        ldc.i4.0\n";
-                        codigoObjeto += "        ceq\n";
-                    } else if (operadorRelacional.equals("<")) {
-                        codigoObjeto += "        clt\n";
-                    } else if (operadorRelacional.equals(">")) {
-                        codigoObjeto += "        cgt\n";
+                    if (tipoEsq.equals("string") || tipoDir.equals("string")) {
+                        // Comparação especial para strings
+                        codigoObjeto += "        call int32 [mscorlib]System.String::Compare(string, string)\n";
+                        codigoObjeto += "        ldc.i4.0\n"; // Carrega 0 para comparação
+
+                        switch (operadorRelacional) {
+                            case "==":
+                                codigoObjeto += "        ceq\n";
+                                break;
+                            case "!=":
+                                codigoObjeto += "        ceq\n";
+                                codigoObjeto += "        ldc.i4.0\n";
+                                codigoObjeto += "        ceq\n";
+                                break;
+                            case "<":
+                                codigoObjeto += "        clt\n";
+                                break;
+                            case ">":
+                                codigoObjeto += "        cgt\n";
+                                break;
+                        }
+                    } else {
+                        // Comparação para tipos numéricos
+                        switch (operadorRelacional) {
+                            case "==":
+                                codigoObjeto += "        ceq\n";
+                                break;
+                            case "!=":
+                                codigoObjeto += "        ceq\n";
+                                codigoObjeto += "        ldc.i4.0\n";
+                                codigoObjeto += "        ceq\n";
+                                break;
+                            case "<":
+                                codigoObjeto += "        clt\n";
+                                break;
+                            case ">":
+                                codigoObjeto += "        cgt\n";
+                                break;
+                        }
                     }
 
                     pilhaTipos.push("bool");
@@ -330,7 +366,7 @@ public class Semantico implements Constants {
                     pilhaTipos.push("string");
                     break;
 
-                // Ação 133 - Operador unário 
+                // Ação 133 - Operador unário
                 case 133:
                     codigoObjeto += "        neg\n";
                     break;
